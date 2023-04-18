@@ -5,10 +5,16 @@ import 'package:mpdam_job_finder/models/Company.dart';
 import 'screens/Company/JobOffersScreen.dart';
 import 'package:mpdam_job_finder/models/JobOffer.dart';
 
-import 'screens/Employee/ProfileScreen.dart';
-import 'package:mpdam_job_finder/models/Employee.dart';
+import 'screens/Student/ProfileScreen.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
+void configureApp() {
+  setUrlStrategy(PathUrlStrategy());
+}
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureApp();
   runApp(const MyApp());
 }
 
@@ -24,7 +30,6 @@ class MyApp extends StatelessWidget {
           '/companies': (context) => CompaniesScreen(),
           '/joboffers': (context) => JobOffersScreen(),
           '/profile': (context) => ProfileScreen()
-          // Add more routes here as necessary
         });
   }
 }
