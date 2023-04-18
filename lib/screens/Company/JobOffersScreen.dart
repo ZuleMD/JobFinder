@@ -9,7 +9,7 @@ class JobOffersScreen extends StatefulWidget {
 }
 
 class _JobOffersScreenState extends State<JobOffersScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _oKey = GlobalKey<FormState>();
   final _companyNameController = TextEditingController();
   final _companyImageController = TextEditingController();
   final _companyAddressController = TextEditingController();
@@ -177,7 +177,7 @@ class _JobOffersScreenState extends State<JobOffersScreen> {
           title: Text(_isEditing ? 'Edit Job Offer' : 'Add Job Offer'),
           content: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: _oKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -272,7 +272,7 @@ class _JobOffersScreenState extends State<JobOffersScreen> {
             ),
             TextButton(
               onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
+                if (_oKey.currentState?.validate() ?? false) {
                   if (_isEditing) {
                     updateJobOffer(
                         _companyNameController.text,

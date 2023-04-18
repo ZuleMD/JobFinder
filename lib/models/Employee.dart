@@ -4,6 +4,7 @@ class Employee {
   String address;
   String phone;
   String image;
+  String role;
 
   Employee({
     required this.id,
@@ -11,5 +12,6 @@ class Employee {
     required this.address,
     required this.phone,
     required this.image,
-  });
+    String? role,
+  }) : this.role = role ?? "student";
 }

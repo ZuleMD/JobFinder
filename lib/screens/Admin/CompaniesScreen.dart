@@ -3,13 +3,13 @@ import 'package:mpdam_job_finder/models/Company.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class CompanyScreen extends StatefulWidget {
+class CompaniesScreen extends StatefulWidget {
   @override
-  _CompanyScreenState createState() => _CompanyScreenState();
+  _CompaniesScreenState createState() => _CompaniesScreenState();
 }
 
-class _CompanyScreenState extends State<CompanyScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _CompaniesScreenState extends State<CompaniesScreen> {
+  final _cKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
@@ -25,19 +25,19 @@ class _CompanyScreenState extends State<CompanyScreen> {
 
   Future<void> fetchCompanies() async {
     final response =
-        await http.get(Uri.parse('http://localhost:3000/companies'));
+        await http.get(Uri.parse('http://localhost:3000/users?role=company'));
     final extractedData = json.decode(response.body) as List<dynamic>;
     final List<Company> loadedCompanies = [];
     extractedData.forEach((companiesData) {
       loadedCompanies.add(Company(
-        id: companiesData['id'],
-        name: companiesData['name'],
-        address: companiesData['address'],
-        email: companiesData['email'],
-        password: companiesData['password'],
-        image: companiesData['image'],
-        description: companiesData['description'],
-      ));
+          id: companiesData['id'],
+          name: companiesData['name'],
+          address: companiesData['address'],
+          email: companiesData['email'],
+          password: companiesData['password'],
+          image: companiesData['image'],
+          description: companiesData['description'],
+          role: companiesData['role']));
     });
 
     setState(() {
@@ -48,14 +48,15 @@ class _CompanyScreenState extends State<CompanyScreen> {
   Future<void> addCompany(String name, String address, String email,
       String password, String image, String description) async {
     final response = await http.post(
-      Uri.parse('http://localhost:3000/companies'),
+      Uri.parse('http://localhost:3000/signup'),
       body: json.encode({
         'name': name,
         'address': address,
         'email': email,
         'password': password,
         'image': image,
-        'description': description
+        'description': description,
+        'role': 'company',
       }),
       headers: {'Content-Type': 'application/json'},
     );
@@ -67,7 +68,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
         email: email,
         password: password,
         image: image,
-        description: description);
+        description: description,
+        role: "company");
 
     setState(() {
       _companies.add(newCompany);
@@ -80,7 +82,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
 
     if (companyIndex >= 0) {
       final response = await http.put(
-        Uri.parse('http://localhost:3000/companies/$id'),
+        Uri.parse('http://localhost:3000/users/$id'),
         body: json.encode({
           'name': name,
           'address': address,
@@ -126,7 +128,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 final response = await http
-                    .delete(Uri.parse('http://localhost:3000/companies/$id'));
+                    .delete(Uri.parse('http://localhost:3000/users/$id'));
                 setState(() {
                   _companies.removeWhere((company) => company.id == id);
                 });
@@ -165,7 +167,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
           title: Text(_isEditing ? 'Edit Company' : 'Add Company'),
           content: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: _cKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -262,7 +264,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
             ),
             TextButton(
               onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
+                if (_cKey.currentState?.validate() ?? false) {
                   if (_isEditing) {
                     updateCompany(
                         _nameController.text,
