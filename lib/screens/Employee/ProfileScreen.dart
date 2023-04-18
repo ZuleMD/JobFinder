@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:mpdam_job_finder/models/Employee.dart';
-
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -22,17 +20,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> fetchProfileData() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:3000/employee'));
+    final response = await http.get(Uri.parse(
+        'http://localhost:3000/users?id=4')); //we update here: when the authenticated user's id
     final jsonData = json.decode(response.body);
 
-    final employee = jsonData[0];
+    final student = jsonData[0];
 
     setState(() {
-      _fullNameController.text = employee['fullName'];
-      _addressController.text = employee['address'];
-      _phoneController.text = employee['phone'];
-      _imageController.text = employee['image'];
+      _fullNameController.text = student['fullName'];
+      _addressController.text = student['address'];
+      _phoneController.text = student['phone'];
+      _imageController.text = student['image'];
     });
   }
 
@@ -40,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String image, int id) async {
     try {
       await http.put(
-        Uri.parse('http://localhost:3000/employee/$id'),
+        Uri.parse('http://localhost:3000/users/$id'),
         body: json.encode({
           'fullName': fullName,
           'address': address,
@@ -129,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _addressController.text,
                     _phoneController.text,
                     _imageController.text,
-                    1 // assuming the id of the employee is always 1
+                    4 // assuming the id of the student is always 4
                     );
               },
             ),
