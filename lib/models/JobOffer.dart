@@ -5,7 +5,7 @@ class JobOffer {
   String companyAddress;
   String name;
   String type;
-  String requirements;
+  List<String> requirements;
 
   JobOffer(
       {required this.id,
