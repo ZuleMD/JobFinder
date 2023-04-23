@@ -96,18 +96,18 @@ class _DetailScreenState extends State<DetailScreen> {
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color(0xFF7165D6),
+                              color: Color.fromARGB(255, 238, 142, 247),
                             ),
                           ),
                           label: Text(
                             "Title",
                             style: TextStyle(
-                              color: Color(0xFF7165D6),
+                              color: Color.fromARGB(255, 238, 142, 247),
                             ),
                           ),
                           prefixIcon: Icon(
                             Icons.title, // Use location icon
-                            color: Color(0xFF7165D6),
+                            color: Color.fromARGB(255, 238, 142, 247),
                           ),
                         ),
                         controller: _nameController,
@@ -128,18 +128,18 @@ class _DetailScreenState extends State<DetailScreen> {
                               border: OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFF7165D6),
+                                  color: Color.fromARGB(255, 238, 142, 247),
                                 ),
                               ),
                               label: Text(
                                 "Type",
                                 style: TextStyle(
-                                  color: Color(0xFF7165D6),
+                                  color: Color.fromARGB(255, 238, 142, 247),
                                 ),
                               ),
                               prefixIcon: Icon(
                                 Icons.type_specimen_outlined,
-                                color: Color(0xFF7165D6),
+                                color: Color.fromARGB(255, 238, 142, 247),
                               ),
                             ),
                             value: value,
@@ -169,20 +169,20 @@ class _DetailScreenState extends State<DetailScreen> {
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color(0xFF7165D6),
+                              color: Color.fromARGB(255, 238, 142, 247),
                             ),
                           ),
                           label: Text(
                             "Requirement",
                             style: TextStyle(
-                              color: Color(0xFF7165D6),
+                              color: Color.fromARGB(255, 238, 142, 247),
                             ),
                           ),
 
                           // Use labelText instead of label
                           prefixIcon: Icon(
                             Icons.description, // Use description icon
-                            color: Color(0xFF7165D6),
+                            color: Color.fromARGB(255, 238, 142, 247),
                           ),
                         ),
                         controller: _requirementsController,
@@ -199,18 +199,18 @@ class _DetailScreenState extends State<DetailScreen> {
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Color(0xFF7165D6),
+                            color: Color.fromARGB(255, 238, 142, 247),
                           ),
                         ),
                         label: Text(
                           "Closing Date",
                           style: TextStyle(
-                            color: Color(0xFF7165D6),
+                            color: Color.fromARGB(255, 238, 142, 247),
                           ),
                         ),
                         prefixIcon: Icon(
                           Icons.calendar_today_outlined,
-                          color: Color(0xFF7165D6),
+                          color: Color.fromARGB(255, 238, 142, 247),
                         ),
                       ),
                       readOnly: true,
@@ -237,10 +237,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           builder: (BuildContext context, Widget? child) {
                             return Theme(
                               data: ThemeData.light().copyWith(
-                                primaryColor: Color(0xFF7165D6),
-                                hintColor: Color(0xFF7165D6),
+                                primaryColor:
+                                    Color.fromARGB(255, 238, 142, 247),
+                                hintColor: Color.fromARGB(255, 238, 142, 247),
                                 colorScheme: ColorScheme.light(
-                                  primary: Color(0xFF7165D6),
+                                  primary: Color.fromARGB(255, 238, 142, 247),
                                 ),
                                 buttonTheme: ButtonThemeData(
                                   textTheme: ButtonTextTheme.primary,
@@ -313,7 +314,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF7165D6),
+      backgroundColor: Color.fromARGB(255, 238, 142, 247),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -367,13 +368,13 @@ class _DetailScreenState extends State<DetailScreen> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.lock_clock),
                             SizedBox(width: 5),
                             Text(
-                              "Closing date: " + widget.job.closingdate,
+                              widget.job.type,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -382,9 +383,10 @@ class _DetailScreenState extends State<DetailScreen> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Icon(Icons.lock_clock),
                             SizedBox(width: 5),
                             Text(
-                              widget.job.type,
+                              "Closing date: " + widget.job.closingdate,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
@@ -410,7 +412,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               child: Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF9F97E2),
+                                  color: Color(0xFF4DB6AC),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
@@ -459,7 +461,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               child: Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF9F97E2),
+                                  color: Color(0xFF4DB6AC),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
@@ -532,7 +534,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF7165D6),
+                          color: Color.fromARGB(255, 238, 142, 247),
                         ),
                       ),
                       //spacer align next widget tothe end of row
@@ -544,7 +546,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF7165D6),
+                            color: Color.fromARGB(255, 238, 142, 247),
                           ),
                         ),
                       )
@@ -625,7 +627,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         child: Icon(
                           Icons.location_on,
-                          color: Color(0xFF7165D6),
+                          color: Color(0xFFFED408),
                           size: 30,
                         ),
                       ),

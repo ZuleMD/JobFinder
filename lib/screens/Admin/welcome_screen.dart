@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mpdam_job_finder/screens/Company/home_screen.dart';
-import 'package:mpdam_job_finder/screens/Company/widgets/navbar_roots.dart';
+import 'package:mpdam_job_finder/screens/Admin/home_screen.dart';
+import 'package:mpdam_job_finder/screens/Admin/widgets/navbar_roots.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreenAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(

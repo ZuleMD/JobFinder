@@ -139,7 +139,7 @@ class Canceledchedule extends StatelessWidget {
                           width: 150,
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: Color(0xFF7165D5),
+                            color: Color(0xFF4DB6AC),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -283,7 +283,7 @@ class Canceledchedule extends StatelessWidget {
                           width: 150,
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: Color(0xFF7165D5),
+                            color: Color(0xFF4DB6AC),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -427,7 +427,7 @@ class Canceledchedule extends StatelessWidget {
                           width: 150,
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: Color(0xFF7165D5),
+                            color: Color(0xFF4DB6AC),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -571,7 +571,7 @@ class Canceledchedule extends StatelessWidget {
                           width: 150,
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: Color(0xFF7165D5),
+                            color: Color(0xFF4DB6AC),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(

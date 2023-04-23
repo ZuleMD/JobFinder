@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mpdam_job_finder/screens/Company/home_screen.dart';
+import 'package:mpdam_job_finder/screens/Admin/home_screen.dart';
 
-import 'package:mpdam_job_finder/screens/Company/schedule_screen.dart';
-import 'package:mpdam_job_finder/screens/Company/settings_screen.dart';
-import 'package:mpdam_job_finder/screens/Company/messages_screen.dart';
+import 'package:mpdam_job_finder/screens/Admin/settings_screen.dart';
+import 'package:mpdam_job_finder/screens/Admin/messages_screen.dart';
 
 class NavBarRoots extends StatefulWidget {
   @override
@@ -15,11 +14,10 @@ class _NavBarRootsState extends State<NavBarRoots> {
   int _selectedIndex = 0;
   final _screens = [
     //Home Screen
-    HomeScreen(),
+    HomeAdmin(),
     //Message Screen
     MessageScreen(),
-    //Schedule Screen
-    ScheduleScreen(),
+
     // Setting Screen
     SettingsScreen(),
   ];
@@ -28,16 +26,6 @@ class _NavBarRootsState extends State<NavBarRoots> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _screens[_selectedIndex],
-      /*floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF7165D6),
-        elevation: 0,
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),*/
       bottomNavigationBar: Container(
         height: 80,
         child: BottomNavigationBar(
@@ -63,10 +51,6 @@ class _NavBarRootsState extends State<NavBarRoots> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_text_fill),
               label: "Message",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month),
-              label: "Schedule",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

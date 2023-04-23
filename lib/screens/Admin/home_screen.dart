@@ -1,49 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:mpdam_job_finder/screens/Company/widgets/taglist.dart';
-import 'package:mpdam_job_finder/screens/Company/detail_screen.dart';
-import 'package:mpdam_job_finder/models/job.dart';
+import 'package:mpdam_job_finder/models/Company.dart';
+import 'package:mpdam_job_finder/screens/Admin/detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeAdmin extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeAdminState createState() => _HomeAdminState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeAdminState extends State<HomeAdmin> {
   final _oKey = GlobalKey<FormState>();
-  final _companyNameController = TextEditingController();
-  final _companyImageController = TextEditingController();
-  final _companyAddressController = TextEditingController();
   final _nameController = TextEditingController();
-  ValueNotifier<String?> Category = ValueNotifier<String?>(null);
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _imageController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
-  final _requirementsController = TextEditingController();
-  final _closingdateController = TextEditingController();
-
-  List<String> types = [
-    "Select Type",
-    "Full time",
-    "contract",
-    "Part-time",
-    "Internship"
-  ];
-
-  late String selectedCategory =
-      types[0]; // To keep track of the selected category
-  DateTime selectedDate = DateTime.now();
-
-  List categories = [
-    "UI/UX",
-    "MERN Stack",
-    "IOT",
-    "AI",
-  ];
-
-  late Future<List<Job>> _jobList;
+  late Future<List<Company>> _companyList;
 
   @override
   void initState() {
     super.initState();
-    _jobList = Job.generateJobs();
+    _companyList = Company.generateCompanies();
   }
 
   void _showFormDialog(BuildContext context) {
@@ -51,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Job Offer'),
+          title: Text('Add company'),
           content: SingleChildScrollView(
             child: Form(
               key: _oKey,
@@ -69,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           label: Text(
-                            "Title",
+                            "Name",
                             style: TextStyle(
                               color: Color(0xFF7165D6),
                             ),
@@ -82,52 +60,37 @@ class _HomeScreenState extends State<HomeScreen> {
                         controller: _nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter job title';
+                            return 'Please enter company name';
                           }
                         }),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: Category,
-                    builder:
-                        (BuildContext context, String? value, Widget? child) {
-                      return Padding(
-                        padding: EdgeInsets.all(12),
-                        child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFF7165D6),
-                                ),
-                              ),
-                              label: Text(
-                                "Type",
-                                style: TextStyle(
-                                  color: Color(0xFF7165D6),
-                                ),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.type_specimen_outlined,
-                                color: Color(0xFF7165D6),
-                              ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF7165D6),
                             ),
-                            value: value,
-                            items: types.map((category) {
-                              return DropdownMenuItem(
-                                value: category,
-                                child: Text(category),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              Category.value = newValue;
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter job type';
-                              }
-                            }),
-                      );
-                    },
+                          ),
+                          label: Text(
+                            "Address",
+                            style: TextStyle(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.location_on, // Use location icon
+                            color: Color(0xFF7165D6),
+                          ),
+                        ),
+                        controller: _addressController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter company name';
+                          }
+                        }),
                   ),
                   Padding(
                     padding: EdgeInsets.all(12),
@@ -142,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           label: Text(
-                            "Requirement",
+                            "Description",
                             style: TextStyle(
                               color: Color(0xFF7165D6),
                             ),
@@ -154,78 +117,96 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Color(0xFF7165D6),
                           ),
                         ),
-                        controller: _requirementsController,
+                        controller: _descriptionController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter requirements';
+                            return 'Please enter descriptions';
                           }
                         }),
                   ),
                   Padding(
                     padding: EdgeInsets.all(12),
                     child: TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          label: Text(
+                            "Email",
+                            style: TextStyle(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.email, // Use location icon
                             color: Color(0xFF7165D6),
                           ),
                         ),
-                        label: Text(
-                          "Closing Date",
-                          style: TextStyle(
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter company email';
+                          }
+                        }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          label: Text(
+                            "Password",
+                            style: TextStyle(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.password, // Use location icon
                             color: Color(0xFF7165D6),
                           ),
                         ),
-                        prefixIcon: Icon(
-                          Icons.calendar_today_outlined,
-                          color: Color(0xFF7165D6),
+                        controller: _passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter company password';
+                          }
+                        }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          label: Text(
+                            "Image",
+                            style: TextStyle(
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.image, // Use location icon
+                            color: Color(0xFF7165D6),
+                          ),
                         ),
-                      ),
-                      readOnly: true,
-                      controller: _closingdateController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter closing date';
-                        }
-                        DateTime selectedDate = DateTime.parse(value);
-                        if (selectedDate.isBefore(DateTime.now())) {
-                          return 'Closing date cannot be in the past';
-                        }
-                        return null;
-                      },
-                      onTap: () async {
-                        final DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100),
-                          helpText: 'Select a date',
-                          cancelText: 'Cancel',
-                          confirmText: 'OK',
-                          builder: (BuildContext context, Widget? child) {
-                            return Theme(
-                              data: ThemeData.light().copyWith(
-                                primaryColor: Color(0xFF7165D6),
-                                hintColor: Color(0xFF7165D6),
-                                colorScheme: ColorScheme.light(
-                                  primary: Color(0xFF7165D6),
-                                ),
-                                buttonTheme: ButtonThemeData(
-                                  textTheme: ButtonTextTheme.primary,
-                                ),
-                              ),
-                              child: child ?? const SizedBox.shrink(),
-                            );
-                          },
-                        );
-                        if (pickedDate != null) {
-                          selectedDate = pickedDate;
-                          _closingdateController.text =
-                              "${selectedDate.toLocal()}".split(' ')[0];
-                        }
-                      },
-                    ),
+                        controller: _imageController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter company image';
+                          }
+                        }),
                   ),
                 ],
               ),
@@ -234,13 +215,12 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                _companyNameController.clear();
-                _companyImageController.clear();
-                _companyAddressController.clear();
                 _nameController.clear();
-                Category.value = null;
-                _requirementsController.clear();
-                _closingdateController.clear();
+                _imageController.clear();
+                _addressController.clear();
+                _descriptionController.clear();
+                _emailController.clear();
+                _passwordController.clear();
                 Navigator.pop(context);
               },
               child: const Text('CANCEL'),
@@ -248,31 +228,28 @@ class _HomeScreenState extends State<HomeScreen> {
             TextButton(
               onPressed: () {
                 if (_oKey.currentState?.validate() ?? false) {
-                  Future<Job> newJobOffer = Job.addJobOffer(
-                      companyName: 'Topnet',
-                      companyImage:
-                          'https://i0.wp.com/lapresse.tn/wp-content/uploads/2019/05/Steg.jpg?fit=850%2C491&ssl=1',
-                      companyAddress: 'Tunis',
+                  Future<Company> newCompany = Company.addCompany(
                       name: _nameController.text,
-                      type: Category.value.toString(),
-                      requirements: [_requirementsController.text],
-                      closingdate: _closingdateController.text);
+                      address: _addressController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      image: _imageController.text,
+                      description: _descriptionController.text);
 
-                  newJobOffer.then((jobOffer) {
+                  newCompany.then((company) {
                     setState(() {
-                      _jobList.then((value) => value.add(jobOffer));
+                      _companyList.then((value) => value.add(company));
                     });
                   }).catchError((error) {
                     // Handle any errors that occur during the asynchronous operation
                   });
 
-                  _companyNameController.clear();
-                  _companyImageController.clear();
-                  _companyAddressController.clear();
                   _nameController.clear();
-                  Category.value = null;
-                  _requirementsController.clear();
-                  _closingdateController.clear();
+                  _addressController.clear();
+                  _emailController.clear();
+                  _passwordController.clear();
+                  _imageController.clear();
+                  _descriptionController.clear();
 
                   Navigator.pop(context);
                 }
@@ -298,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Hello Jane Doe",
+                  "Hello Admin",
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
@@ -349,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 30),
                       Text(
-                        "Add New Offre",
+                        "Add New Company",
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.white,
@@ -405,19 +382,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          SizedBox(height: 25),
-          Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Text(
-              "Categories",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
-              ),
-            ),
-          ),
-          TagList(),
           SizedBox(height: 15),
           Padding(
             padding: EdgeInsets.only(left: 15),
@@ -430,9 +394,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          FutureBuilder<List<Job>>(
-            future: _jobList,
-            builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
+          FutureBuilder<List<Company>>(
+            future: _companyList,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Company>> snapshot) {
               if (snapshot.hasData) {
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -442,13 +407,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final job = snapshot.data![index];
+                    final company = snapshot.data![index];
                     return InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DetailScreen(job),
+                            builder: (context) => DetailScreen(company),
                           ),
                         );
                       },
@@ -475,12 +440,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 20,
-                                  backgroundImage:
-                                      NetworkImage(job.companyImage),
+                                  backgroundImage: NetworkImage(company.image),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  job.name,
+                                  company.name,
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -493,25 +457,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.lock_clock, color: Colors.red),
+                                Icon(Icons.location_on,
+                                    color: Color(0xFFFED408)),
                                 SizedBox(width: 5),
                                 Text(
-                                  "Closing date:",
+                                  company.address,
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.red,
                                   ),
                                 ),
                               ],
-                            ),
-
-                            // add some spacing between the icon and the text
-                            Text(
-                              job.closingdate,
-                              style: TextStyle(
-                                color: Colors.black54,
-                              ),
                             ),
                           ],
                         ),
