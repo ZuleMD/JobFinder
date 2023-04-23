@@ -3,6 +3,9 @@ import 'package:mpdam_job_finder/models/job.dart';
 import 'package:mpdam_job_finder/models/Company.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter/services.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 //student
 import 'screens/Student/ProfileScreen.dart';
@@ -26,25 +29,77 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Widget initialScreen = HomePage();
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  void getUser() async {
+    final accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjgyMjg2MTgzLCJleHAiOjE2ODIyODk3ODMsInN1YiI6IjQifQ.t4vtkBzLEkyg1MneA75j-UcYbjNGQyu-Xb5ObLzVa8I'; // replace with actual token from login API
+
+    var decodedToken = JwtDecoder.decode(accessToken);
+    var id = decodedToken['sub'];
+
+    try {
+      final response =
+          await http.get(Uri.parse('http://localhost:3000/users/$id'));
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        String role = jsonData['role'];
+        switch (role) {
+          case 'admin':
+            setState(() {
+              initialScreen = WelcomeScreenAdmin();
+            });
+            break;
+          case 'company':
+            setState(() {
+              initialScreen = WelcomeScreen();
+            });
+            break;
+          case 'student':
+            setState(() {
+              initialScreen = HomePage();
+            });
+            break;
+          default:
+            print('Invalid role: $role');
+        }
+      } else {
+        print('Failed to fetch user data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    (SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent)));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Job Finder App',
-        theme: ThemeData(
-            primaryColor: Color.fromARGB(255, 238, 142, 247),
-            accentColor: Color(0xFFFED408)),
-        initialRoute: '/admin',
-        routes: {
-          '/company': (context) => WelcomeScreen(),
-          '/admin': (context) => WelcomeScreenAdmin(),
-          '/student': (context) => HomePage(),
-        });
+      debugShowCheckedModeBanner: false,
+      title: 'Job Finder App',
+      theme: ThemeData(
+          primaryColor: const Color.fromARGB(255, 238, 142, 247),
+          accentColor: const Color(0xFFFED408)),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => initialScreen,
+      },
+    );
   }
 }
