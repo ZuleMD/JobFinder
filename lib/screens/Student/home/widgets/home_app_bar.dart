@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mpdam_job_finder/screens/Student/Profile/ProfileScreen.dart';
 
 class HomeAppBar extends StatelessWidget {
   @override
@@ -61,10 +62,17 @@ class HomeAppBar extends StatelessWidget {
               SizedBox(
                 width: 20,
               ),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/avatar.png',
-                  width: 40,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/avatar.png',
+                    width: 40,
+                  ),
                 ),
               )
             ],

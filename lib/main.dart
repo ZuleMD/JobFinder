@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //student
-import 'screens/Student/ProfileScreen.dart';
+import 'screens/Student/Profile/ProfileScreen.dart';
 import 'package:mpdam_job_finder/screens/Student/home/home.dart';
 
 //admin

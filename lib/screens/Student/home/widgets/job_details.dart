@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mpdam_job_finder/screens/Student/home/widgets/icon_text.dart';
 
 import 'package:mpdam_job_finder/models/job.dart';
+import 'package:mpdam_job_finder/screens/Student/ApplyOffer.dart';
 
 class JobDetail extends StatelessWidget {
   final Job job;
@@ -145,7 +146,9 @@ class JobDetail extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ApplyOffer()),
+                  ),
                   child: Text('Apply Now'),
                 ),
               )
