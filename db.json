@@ -27,13 +27,14 @@
       "id": 3
     },
     {
-      "email": "student@gmail.com",
-      "password": "$2a$10$n7IUdN9nBceHJPw7kTcL8uqwXTySgjVexDCqBbwpqbjpyy44PbEc.",
       "fullName": "Jane Doe",
       "address": "Tunis",
       "phone": "90 555 555",
       "image": "https://png.pngtree.com/png-vector/20191116/ourmid/pngtree-business-office-girl-avatar-icon-vector-download-png-image_1991055.jpg",
-      "role": "student",
+      "description": "Im a smart student looking for a job",
+      "isetName": "rades",
+      "password": "$2a$10$WfNLR2X2DDMgzWz8FculVeBbtOBsKjiP4Ig4G5tacBoXYqpu9EloG",
+      "email": "student@gmail.com",
       "id": 4
     }
   ],

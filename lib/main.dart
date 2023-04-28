@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
 
   void getUser() async {
     final accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjgyMjg2MTgzLCJleHAiOjE2ODIyODk3ODMsInN1YiI6IjQifQ.t4vtkBzLEkyg1MneA75j-UcYbjNGQyu-Xb5ObLzVa8I'; // replace with actual token from login API
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjgyNzIyMjc3LCJleHAiOjE2ODI3MjU4NzcsInN1YiI6IjQifQ.buOiljFm1l3W0msAIcCuupHXDYdmVfWmfJ2Xs3Bczow'; // replace with actual token from login API
 
     var decodedToken = JwtDecoder.decode(accessToken);
     var id = decodedToken['sub'];

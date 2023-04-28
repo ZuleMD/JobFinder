@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mpdam_job_finder/screens/Student/Profile/ProfileScreen.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class HomeAppBar extends StatelessWidget {
   @override
@@ -18,17 +19,6 @@ class HomeAppBar extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Jane Doe',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                  color: Color.fromRGBO(53, 57, 53, 1),
                 ),
               ),
             ],
@@ -69,9 +59,9 @@ class HomeAppBar extends StatelessWidget {
                   );
                 },
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/avatar.png',
-                    width: 40,
+                  child: Icon(
+                    Icons.account_circle,
+                    size: 40,
                   ),
                 ),
               )

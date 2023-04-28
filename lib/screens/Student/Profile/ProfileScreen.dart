@@ -19,6 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _imageController = TextEditingController();
   TextEditingController _isetNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -40,6 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _imageController.text = student['image'];
       _descriptionController.text = student['description'];
       _isetNameController.text = student['isetName'];
+      _emailController.text = student['email'];
+      _passwordController.text = student['password'];
     });
   }
 
@@ -54,7 +58,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'phone': phone,
           'image': image,
           'description': description,
-          'isetName': isetName
+          'isetName': isetName,
+          'password': _passwordController.text,
+          'email': _emailController.text
         }),
         headers: {'Content-Type': 'application/json'},
       );
@@ -347,10 +353,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             width: 120,
                             height: 120,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image(image: AssetImage(tProfileImage)),
-                            ),
+                            child: _imageController.text.isEmpty
+                                ? Text('No image')
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.network(
+                                      _imageController.text,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
@@ -358,14 +369,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 10,
                       ),
                       Text(
-                        tProfileHeading,
+                        _fullNameController.text,
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
                       Text(
-                        tProfileSubHeading,
+                        _emailController.text,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2!
