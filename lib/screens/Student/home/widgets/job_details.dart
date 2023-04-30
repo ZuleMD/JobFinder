@@ -2,11 +2,108 @@ import 'package:flutter/material.dart';
 import 'package:mpdam_job_finder/screens/Student/home/widgets/icon_text.dart';
 
 import 'package:mpdam_job_finder/models/job.dart';
-import 'package:mpdam_job_finder/screens/Student/ApplyOffer.dart';
+import 'package:file_picker/file_picker.dart';
 
-class JobDetail extends StatelessWidget {
+class JobDetail extends StatefulWidget {
   final Job job;
   JobDetail(this.job);
+  @override
+  _JobDetailState createState() => _JobDetailState();
+}
+
+class _JobDetailState extends State<JobDetail> {
+  PlatformFile? _file;
+  final _oKey = GlobalKey<FormState>();
+  TextEditingController _resumeController = TextEditingController();
+
+  void _showFormDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Upload your resume'),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _oKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ['pdf'],
+                            );
+                            if (result != null) {
+                              setState(() {
+                                _file = result.files.first;
+                                _resumeController.text = _file!.name;
+                              });
+                            }
+                          },
+                          child: Text('Select a PDF file'),
+                        ),
+                        SizedBox(height: 16),
+                        if (_file != null)
+                          Text('Selected file: ${_file!.name}'),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFF7165D6),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.file_upload, // Use location icon
+                              color: Color(0xFF7165D6),
+                            ),
+                          ),
+                          readOnly: true,
+                          controller: _resumeController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please upload your resume!';
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                _resumeController.clear();
+                Navigator.pop(context);
+              },
+              child: const Text('CANCEL'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_oKey.currentState?.validate() ?? false) {
+                  _resumeController.clear();
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('SAVE'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,13 +142,13 @@ class JobDetail extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.grey.withOpacity(0.1),
                         ),
-                        child: Image.network(job.companyImage),
+                        child: Image.network(widget.job.companyImage),
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Text(
-                        job.companyName,
+                        widget.job.companyName,
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -71,7 +168,7 @@ class JobDetail extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                job.name,
+                widget.job.name,
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -83,8 +180,9 @@ class JobDetail extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconText(Icons.location_on_outlined, job.companyAddress),
-                  IconText(Icons.access_time_outlined, job.type)
+                  IconText(
+                      Icons.location_on_outlined, widget.job.companyAddress),
+                  IconText(Icons.access_time_outlined, widget.job.type)
                 ],
               ),
               SizedBox(
@@ -99,7 +197,7 @@ class JobDetail extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              ...job.requirements
+              ...widget.job.requirements
                   .map((e) => Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Row(
@@ -146,9 +244,9 @@ class JobDetail extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ApplyOffer()),
-                  ),
+                  onPressed: () {
+                    _showFormDialog(context);
+                  },
                   child: Text('Apply Now'),
                 ),
               )
