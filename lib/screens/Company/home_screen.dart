@@ -10,9 +10,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _oKey = GlobalKey<FormState>();
-  final _companyNameController = TextEditingController();
-  final _companyImageController = TextEditingController();
-  final _companyAddressController = TextEditingController();
   final _nameController = TextEditingController();
   ValueNotifier<String?> Category = ValueNotifier<String?>(null);
 
@@ -21,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> types = [
     "Select Type",
-    "Full time",
+    "Full-time",
     "contract",
     "Part-time",
     "Internship"
@@ -43,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _jobList = Job.generateJobs();
+    _jobList = Job.generateJobsForAuthCompany(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imluc3RhZGVlcEBnbWFpbC5jb20iLCJpYXQiOjE2ODQ0NDcwOTcsImV4cCI6MTY4NDQ1MDY5Nywic3ViIjoiOSJ9.PCQbhp9Q1pRW4pKLq4TZQF5HVgJ6tI6U6OMMLl0koVY');
   }
 
   void _showFormDialog(BuildContext context) {
@@ -234,9 +232,6 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                _companyNameController.clear();
-                _companyImageController.clear();
-                _companyAddressController.clear();
                 _nameController.clear();
                 Category.value = null;
                 _requirementsController.clear();
@@ -249,13 +244,12 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 if (_oKey.currentState?.validate() ?? false) {
                   Future<Job> newJobOffer = Job.addJobOffer(
-                      companyName: 'Topnet',
-                      companyImage:
-                          'https://i0.wp.com/lapresse.tn/wp-content/uploads/2019/05/Steg.jpg?fit=850%2C491&ssl=1',
-                      companyAddress: 'Tunis',
                       name: _nameController.text,
                       type: Category.value.toString(),
-                      requirements: [_requirementsController.text],
+                      requirements: _requirementsController.text
+                          .split('\n')
+                          .map((line) => line.trim())
+                          .toList(),
                       closingdate: _closingdateController.text);
 
                   newJobOffer.then((jobOffer) {
@@ -266,9 +260,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Handle any errors that occur during the asynchronous operation
                   });
 
-                  _companyNameController.clear();
-                  _companyImageController.clear();
-                  _companyAddressController.clear();
                   _nameController.clear();
                   Category.value = null;
                   _requirementsController.clear();

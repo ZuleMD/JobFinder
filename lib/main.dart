@@ -14,6 +14,7 @@ import 'package:mpdam_job_finder/screens/Student/home/home.dart';
 //admin
 import 'package:mpdam_job_finder/screens/Admin/home_screen.dart';
 import 'package:mpdam_job_finder/screens/Admin/welcome_screen.dart';
+
 //company
 import 'package:mpdam_job_finder/screens/Company/welcome_screen.dart';
 import 'package:mpdam_job_finder/screens/Company/home_screen.dart';
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
 
   void getUser() async {
     final accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjgyNzIyMjc3LCJleHAiOjE2ODI3MjU4NzcsInN1YiI6IjQifQ.buOiljFm1l3W0msAIcCuupHXDYdmVfWmfJ2Xs3Bczow'; // replace with actual token from login API
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjg0NDQ4NzYxLCJleHAiOjE2ODQ0NTIzNjEsInN1YiI6IjYifQ.8WSDsIFBMWSlnU_O3vIRWs1Jw1lqIMETx8nFXoxNK58'; // replace with actual token from login API
 
     var decodedToken = JwtDecoder.decode(accessToken);
     var id = decodedToken['sub'];
@@ -58,6 +59,7 @@ class _MyAppState extends State<MyApp> {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         String role = jsonData['role'];
+
         switch (role) {
           case 'admin':
             setState(() {

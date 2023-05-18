@@ -45,9 +45,6 @@ class _DetailScreenState extends State<DetailScreen> {
   ];
 
   final _oKey = GlobalKey<FormState>();
-  final _companyNameController = TextEditingController();
-  final _companyImageController = TextEditingController();
-  final _companyAddressController = TextEditingController();
   final _nameController = TextEditingController();
   ValueNotifier<String?> Category = ValueNotifier<String?>(null);
 
@@ -266,9 +263,6 @@ class _DetailScreenState extends State<DetailScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                _companyNameController.clear();
-                _companyImageController.clear();
-                _companyAddressController.clear();
                 _nameController.clear();
                 Category.value = null;
                 _requirementsController.clear();
@@ -281,22 +275,18 @@ class _DetailScreenState extends State<DetailScreen> {
               onPressed: () {
                 if (_oKey.currentState?.validate() ?? false) {
                   Future<Job> newJobOffer = Job.updateJobOffer(
-                      companyName: 'Topnet',
-                      companyImage:
-                          'https://i0.wp.com/lapresse.tn/wp-content/uploads/2019/05/Steg.jpg?fit=850%2C491&ssl=1',
-                      companyAddress: 'Tunis',
                       name: _nameController.text,
                       type: Category.value.toString(),
-                      requirements: [_requirementsController.text],
+                      requirements: _requirementsController.text
+                          .split('\n')
+                          .map((line) => line.trim())
+                          .toList(),
                       closingdate: _closingdateController.text,
                       id: _selectedID);
 
                   setState(() {});
                   Navigator.of(context).pop();
 
-                  _companyNameController.clear();
-                  _companyImageController.clear();
-                  _companyAddressController.clear();
                   _nameController.clear();
                   Category.value = null;
                   _requirementsController.clear();
