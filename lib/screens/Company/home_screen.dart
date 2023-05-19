@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _jobList = Job.generateJobsForAuthCompany(
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imluc3RhZGVlcEBnbWFpbC5jb20iLCJpYXQiOjE2ODQ0NDcwOTcsImV4cCI6MTY4NDQ1MDY5Nywic3ViIjoiOSJ9.PCQbhp9Q1pRW4pKLq4TZQF5HVgJ6tI6U6OMMLl0koVY');
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9yYW5nZUBnbWFpbC5jb20iLCJpYXQiOjE2ODQ1MTU0MDksImV4cCI6MTY4NDUxOTAwOSwic3ViIjoiNyJ9.hYUsZbie7hxxVLqVHWYu3vKMUGLOCa1HTGuJvd_yZ8o');
   }
 
   void _showFormDialog(BuildContext context) {

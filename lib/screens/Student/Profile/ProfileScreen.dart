@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:html';
+import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 import 'package:mpdam_job_finder/screens/Student/Profile/widgets/profile_menu.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mpdam_job_finder/common/constant/image_strings.dart';
@@ -29,11 +32,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> fetchProfileData() async {
-    final response = await http.get(Uri.parse(
-        'http://localhost:3000/users?id=4')); //we update here: when the authenticated user's id
-    final jsonData = json.decode(response.body);
+    final accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjg0NTE1Mjc0LCJleHAiOjE2ODQ1MTg4NzQsInN1YiI6IjkifQ.jGnf1ixX3vBQeQbPeNKqO_HtPgzcmUzeJYaRHxuMtr8';
+    final decodedToken = JwtDecoder.decode(accessToken);
+    final Studentid = decodedToken['sub'];
 
-    final student = jsonData[0];
+    final id = decodedToken['sub'];
+
+    final userResponse =
+        await http.get(Uri.parse('http://localhost:3000/users/$Studentid'));
+
+    final student = jsonDecode(userResponse.body);
+    print(student);
 
     setState(() {
       _fullNameController.text = student['fullName'];
@@ -48,10 +58,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> saveChanges(String fullName, String address, String phone,
-      String image, String description, String isetName, int id) async {
+      String image, String description, String isetName) async {
+    final accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjg0NTE1Mjc0LCJleHAiOjE2ODQ1MTg4NzQsInN1YiI6IjkifQ.jGnf1ixX3vBQeQbPeNKqO_HtPgzcmUzeJYaRHxuMtr8';
+    final decodedToken = JwtDecoder.decode(accessToken);
+    final Studentid = decodedToken['sub'];
+
     try {
       await http.put(
-        Uri.parse('http://localhost:3000/users/$id'),
+        Uri.parse('http://localhost:3000/users/$Studentid'),
         body: json.encode({
           'fullName': fullName,
           'address': address,
@@ -60,7 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'description': description,
           'isetName': isetName,
           'password': _passwordController.text,
-          'email': _emailController.text
+          'email': _emailController.text,
+          'role': 'student',
         }),
         headers: {'Content-Type': 'application/json'},
       );
@@ -289,8 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _phoneController.text,
                       _imageController.text,
                       _descriptionController.text,
-                      _isetNameController.text,
-                      4);
+                      _isetNameController.text);
 
                   setState(() {});
                   Navigator.of(context).pop();

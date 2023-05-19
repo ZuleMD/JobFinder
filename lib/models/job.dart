@@ -53,16 +53,12 @@ class Job {
     final userData = jsonDecode(userResponse.body);
     final companyName = userData['name'];
 
-    print(userData);
-
     final jobOffersResponse =
         await http.get(Uri.parse('http://localhost:3000/joboffers'));
 
     final extractedData = json.decode(jobOffersResponse.body) as List<dynamic>;
     final filteredData = extractedData
         .where((jobOfferData) => jobOfferData['companyName'] == companyName);
-
-    print(extractedData);
 
     return filteredData
         .map((jobOfferData) => Job(
@@ -78,6 +74,30 @@ class Job {
         .toList();
   }
 
+  static Future<List<dynamic>> generateJobApplicationsForAuthCompany(
+      String accessToken, String jobName) async {
+    final decodedToken = JwtDecoder.decode(accessToken);
+    final id = decodedToken['sub'];
+
+    final userResponse =
+        await http.get(Uri.parse('http://localhost:3000/users/$id'));
+
+    final userData = jsonDecode(userResponse.body);
+    final companyName = userData['name'];
+
+    final jobApplicationsResponse =
+        await http.get(Uri.parse('http://localhost:3000/jobapplications'));
+
+    final extractedData =
+        json.decode(jobApplicationsResponse.body) as List<dynamic>;
+    print(extractedData);
+    final filteredData = extractedData.where((jobAppData) =>
+        jobAppData['companyName'] == companyName &&
+        jobAppData['job'] == jobName);
+
+    return filteredData.toList();
+  }
+
   static Future<Job> addJobOffer({
     required String name,
     required String type,
@@ -85,7 +105,7 @@ class Job {
     required String closingdate,
   }) async {
     final accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvcG5ldEBnbWFpbC5jb20iLCJpYXQiOjE2ODQ0NDY0NjQsImV4cCI6MTY4NDQ1MDA2NCwic3ViIjoiOSJ9.L1fS1fy2JcWSw4ip81D23Rpk9DKsyWztbSPCvAVUGsM';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9yYW5nZUBnbWFpbC5jb20iLCJpYXQiOjE2ODQ1MTU0MDksImV4cCI6MTY4NDUxOTAwOSwic3ViIjoiNyJ9.hYUsZbie7hxxVLqVHWYu3vKMUGLOCa1HTGuJvd_yZ8o';
     final decodedToken = JwtDecoder.decode(accessToken);
     final id = decodedToken['sub'];
 
@@ -132,7 +152,7 @@ class Job {
       required String closingdate,
       required int id}) async {
     final accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imluc3RhZGVlcEBnbWFpbC5jb20iLCJpYXQiOjE2ODQ0NDcwOTcsImV4cCI6MTY4NDQ1MDY5Nywic3ViIjoiOSJ9.PCQbhp9Q1pRW4pKLq4TZQF5HVgJ6tI6U6OMMLl0koVY'; // replace with actual token from login API
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9yYW5nZUBnbWFpbC5jb20iLCJpYXQiOjE2ODQ1MTU0MDksImV4cCI6MTY4NDUxOTAwOSwic3ViIjoiNyJ9.hYUsZbie7hxxVLqVHWYu3vKMUGLOCa1HTGuJvd_yZ8o'; // replace with actual token from login API
 
     final decodedToken = JwtDecoder.decode(accessToken);
     final idd = decodedToken['sub'];

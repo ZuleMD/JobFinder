@@ -4,6 +4,11 @@ import 'package:mpdam_job_finder/screens/Student/home/widgets/icon_text.dart';
 import 'package:mpdam_job_finder/models/job.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'dart:convert';
+import 'dart:html';
+import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 class JobDetail extends StatefulWidget {
   final Job job;
   JobDetail(this.job);
@@ -15,6 +20,48 @@ class _JobDetailState extends State<JobDetail> {
   PlatformFile? _file;
   final _oKey = GlobalKey<FormState>();
   TextEditingController _resumeController = TextEditingController();
+  bool _resumeUpdated = false;
+
+  void updateResume() async {
+    final accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjg0NTE1Mjc0LCJleHAiOjE2ODQ1MTg4NzQsInN1YiI6IjkifQ.jGnf1ixX3vBQeQbPeNKqO_HtPgzcmUzeJYaRHxuMtr8';
+    final decodedToken = JwtDecoder.decode(accessToken);
+    final Studentid = decodedToken['sub'];
+
+    // Read the existing user data from the JSON server
+    var response =
+        await http.get(Uri.parse('http://localhost:3000/users/$Studentid'));
+
+    // Parse the response body
+    var userData = jsonDecode(response.body);
+
+    // Get the file data as bytes
+    var fileData = await _file!.bytes;
+
+    var jobApplicationData = {
+      'user': userData,
+      'resume': base64Encode(fileData!),
+      'companyName': widget.job.companyName,
+      'job': widget.job.name
+    };
+
+    // Convert the updated user data back to JSON
+    var jobApplicationJson = jsonEncode(jobApplicationData);
+
+    // Send a PUT request to update the user data on the JSON server
+    await http.post(
+      Uri.parse('http://localhost:3000/jobapplications'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jobApplicationJson,
+    );
+
+    setState(() {
+      _resumeUpdated = true;
+    });
+  }
 
   void _showFormDialog(BuildContext context) {
     showDialog(
@@ -92,6 +139,7 @@ class _JobDetailState extends State<JobDetail> {
             TextButton(
               onPressed: () {
                 if (_oKey.currentState?.validate() ?? false) {
+                  updateResume();
                   _resumeController.clear();
                   Navigator.pop(context);
                 }
@@ -249,7 +297,19 @@ class _JobDetailState extends State<JobDetail> {
                   },
                   child: Text('Apply Now'),
                 ),
-              )
+              ),
+              _resumeUpdated
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        'Resume uploaded successfully!',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
             ],
           )
         ],
